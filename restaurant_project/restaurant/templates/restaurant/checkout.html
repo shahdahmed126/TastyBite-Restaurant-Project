@@ -1,0 +1,173 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Checkout - TastyBite Gourmet{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <h1 class="fw-bold text-white mb-4"><i class="fa-solid fa-credit-card me-2 text-warning"></i><span data-en="Complete Your Order" data-ar="إتمام طلبك">Complete Your Order</span></h1>
+
+    <form method="POST" action="{% url 'checkout' %}">
+        {% csrf_token %}
+        <div class="row g-4">
+            <!-- Left Form Side -->
+            <div class="col-lg-7">
+                <!-- Step 1: Order Type -->
+                <div class="glass-panel p-4 mb-4">
+                    <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-1 text-warning"></i> <span data-en="Select Order Type" data-ar="اختر نوع الطلب">Select Order Type</span>
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="order_type" id="type-delivery" value="DELIVERY" {% if form.order_type.value != 'DINE_IN' and form.order_type.value != 'TAKEAWAY' %}checked{% endif %} onclick="toggleAddressField('delivery')">
+                            <label class="btn btn-glass w-100 p-3 text-center rounded-4 h-100 d-flex flex-column align-items-center justify-content-center" for="type-delivery">
+                                <i class="fa-solid fa-motorcycle fs-3 text-warning mb-2"></i>
+                                <span class="fw-bold d-block" data-en="Delivery" data-ar="توصيل">Delivery</span>
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="order_type" id="type-dinein" value="DINE_IN" {% if form.order_type.value == 'DINE_IN' %}checked{% endif %} onclick="toggleAddressField('dinein')">
+                            <label class="btn btn-glass w-100 p-3 text-center rounded-4 h-100 d-flex flex-column align-items-center justify-content-center" for="type-dinein">
+                                <i class="fa-solid fa-utensils fs-3 text-warning mb-2"></i>
+                                <span class="fw-bold d-block" data-en="Dine-In" data-ar="داخل المطعم">Dine-In</span>
+                            </label>
+                        </div>
+                        <div class="col-4">
+                            <input type="radio" class="btn-check" name="order_type" id="type-takeaway" value="TAKEAWAY" {% if form.order_type.value == 'TAKEAWAY' %}checked{% endif %} onclick="toggleAddressField('takeaway')">
+                            <label class="btn btn-glass w-100 p-3 text-center rounded-4 h-100 d-flex flex-column align-items-center justify-content-center" for="type-takeaway">
+                                <i class="fa-solid fa-bag-shopping fs-3 text-warning mb-2"></i>
+                                <span class="fw-bold d-block" data-en="Takeaway" data-ar="استلام">Takeaway</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Contact Information -->
+                <div class="glass-panel p-4 mb-4">
+                    <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-2 text-warning"></i> <span data-en="Customer Details" data-ar="بيانات العميل">Customer Details</span>
+                    </h5>
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold" data-en="Full Name *" data-ar="الاسم بالكامل *">Full Name *</label>
+                        <input type="text" name="customer_name" value="{{ form.customer_name.value|default:'' }}" class="form-control form-control-lg border-secondary text-white rounded-3" style="background: rgba(11, 15, 25, 0.8);" placeholder="Mohamed Ellithy" required>
+                        {% for error in form.customer_name.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold" data-en="Phone Number *" data-ar="رقم الهاتف *">Phone Number *</label>
+                        <input type="tel" name="phone" value="{{ form.phone.value|default:'' }}" class="form-control form-control-lg border-secondary text-white rounded-3" style="background: rgba(11, 15, 25, 0.8);" placeholder="+20 100 123 4567" required>
+                        {% for error in form.phone.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <!-- Dynamic Address or Table Input -->
+                    <div class="mb-3" id="address-container">
+                        <label class="form-label text-muted fw-semibold" data-en="Delivery Address *" data-ar="عنوان التوصيل *">Delivery Address *</label>
+                        <textarea name="address" rows="2" class="form-control border-secondary text-white rounded-3" style="background: rgba(11, 15, 25, 0.8);" placeholder="Street, Building No, Apartment No..." id="address-input" required>{{ form.address.value|default:'' }}</textarea>
+                        {% for error in form.address.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3 d-none" id="table-container">
+                        <label class="form-label text-muted fw-semibold" data-en="Table Number *" data-ar="رقم الطاولة *">Table Number *</label>
+                        <input type="text" name="table_number" value="{{ form.table_number.value|default:'' }}" class="form-control form-control-lg border-secondary text-white rounded-3" style="background: rgba(11, 15, 25, 0.8);" placeholder="Table #5">
+                        {% for error in form.table_number.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted fw-semibold" data-en="Special Instructions (Optional)" data-ar="ملاحظات إضافية (اختياري)">Special Instructions (Optional)</label>
+                        <textarea name="special_instructions" rows="2" class="form-control border-secondary text-white rounded-3" style="background: rgba(11, 15, 25, 0.8);" placeholder="No mayo, extra spicy, extra napkins...">{{ form.special_instructions.value|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <!-- Step 3: Payment Method -->
+                <div class="glass-panel p-4 mb-4">
+                    <h5 class="fw-bold text-white mb-3 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-3 text-warning"></i> <span data-en="Payment Method" data-ar="طريقة الدفع">Payment Method</span>
+                    </h5>
+                    <div class="d-flex flex-column gap-2">
+                        <div class="form-check p-3 rounded-3 glass-card">
+                            <input class="form-check-input ms-1 me-3" type="radio" name="payment_method" id="pay-cash" value="CASH" checked>
+                            <label class="form-check-label text-white fw-bold d-flex align-items-center gap-2" for="pay-cash">
+                                <i class="fa-solid fa-money-bill-wave text-success fs-5"></i>
+                                <span data-en="Cash on Delivery / Upon Service" data-ar="دفع نقداً عند التوصيل / الخدمة">Cash on Delivery / Upon Service</span>
+                            </label>
+                        </div>
+                        <div class="form-check p-3 rounded-3 glass-card">
+                            <input class="form-check-input ms-1 me-3" type="radio" name="payment_method" id="pay-card" value="CARD">
+                            <label class="form-check-label text-white fw-bold d-flex align-items-center gap-2" for="pay-card">
+                                <i class="fa-solid fa-credit-card text-info fs-5"></i>
+                                <span data-en="Credit / Debit Card (Visa / Mastercard)" data-ar="بطاقة ائتمان (فيزا / ماستركارد)">Credit / Debit Card (Visa / Mastercard)</span>
+                            </label>
+                        </div>
+                        <div class="form-check p-3 rounded-3 glass-card">
+                            <input class="form-check-input ms-1 me-3" type="radio" name="payment_method" id="pay-vodafone" value="VODAFONE">
+                            <label class="form-check-label text-white fw-bold d-flex align-items-center gap-2" for="pay-vodafone">
+                                <i class="fa-solid fa-mobile-screen text-danger fs-5"></i>
+                                <span data-en="Vodafone Cash / Mobile Wallet" data-ar="فودافون كاش / محفظة إلكترونية">Vodafone Cash / Mobile Wallet</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-amber w-100 py-3 rounded-4 fw-bold fs-5 shadow-lg">
+                    <i class="fa-solid fa-circle-check me-2"></i> <span data-en="Confirm & Place Order Now" data-ar="تأكيد وتقديم الطلب الآن">Confirm & Place Order Now</span>
+                </button>
+            </div>
+
+            <!-- Right Summary Side -->
+            <div class="col-lg-5">
+                <div class="glass-panel p-4 sticky-top" style="top: 100px;">
+                    <h4 class="fw-bold text-white mb-3 border-bottom border-secondary pb-3" data-en="Your Order Items" data-ar="تفاصيل الطلب">Your Order Items</h4>
+                    <div class="d-flex flex-column gap-3 mb-4 overflow-auto" style="max-height: 400px;">
+                        {% for item_data in cart_items %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if item_data.item.display_image %}
+                                    <img src="{{ item_data.item.display_image }}" class="rounded-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                {% endif %}
+                                <div>
+                                    <h6 class="fw-bold text-white m-0">{{ item_data.item.name }}</h6>
+                                    <small class="text-muted">{{ item_data.quantity }}x @ {{ item_data.item.price }} EGP</small>
+                                </div>
+                            </div>
+                            <span class="text-warning fw-bold">{{ item_data.subtotal }} EGP</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top border-secondary pt-3 fs-4 fw-bold text-white">
+                        <span data-en="Total Amount" data-ar="المبلغ الإجمالي">Total Amount</span>
+                        <span class="text-warning">{{ total_price }} EGP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checked = document.querySelector('input[name="order_type"]:checked');
+        if (checked && checked.value === 'DINE_IN') {
+            toggleAddressField('dinein');
+        } else if (checked && checked.value === 'TAKEAWAY') {
+            toggleAddressField('takeaway');
+        }
+    });
+
+    function toggleAddressField(type) {
+        const addrContainer = document.getElementById('address-container');
+        const addrInput = document.getElementById('address-input');
+        const tableContainer = document.getElementById('table-container');
+
+        if (type === 'dinein') {
+            addrContainer.classList.add('d-none');
+            addrInput.removeAttribute('required');
+            tableContainer.classList.remove('d-none');
+        } else {
+            addrContainer.classList.remove('d-none');
+            addrInput.setAttribute('required', 'required');
+            tableContainer.classList.add('d-none');
+        }
+    }
+</script>
+{% endblock %}

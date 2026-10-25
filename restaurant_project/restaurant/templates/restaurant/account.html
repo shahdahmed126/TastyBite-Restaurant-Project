@@ -1,0 +1,32 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}My Account - TastyBite{% endblock %}
+
+{% block content %}
+<div class="account-header">
+    <div>
+        <span class="eyebrow">Your TastyBite space</span>
+        <h1>Hi, {{ request.user.username }}</h1>
+        <p>Keep track of your rewards and recent orders.</p>
+    </div>
+    <a href="{% url 'logout' %}" class="btn btn-glass"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i>Log out</a>
+</div>
+<div class="row g-4">
+    <div class="col-md-5 col-lg-4">
+        <div class="points-card">
+            <i class="fa-solid fa-award"></i>
+            <span>Available points</span>
+            <strong>{{ profile.points }}</strong>
+            <small>Earn 1 point for every 10 EGP spent.</small>
+        </div>
+    </div>
+    <div class="col-md-7 col-lg-8">
+        <div class="account-panel">
+            <div class="panel-heading"><h2>Recent orders</h2><a href="{% url 'menu' %}">Order again</a></div>
+            {% for order in orders %}
+                <div class="order-row"><div><strong>Order #{{ order.id }}</strong><small>{{ order.created_at|date:'M d, Y' }}</small></div><div class="text-end"><strong>{{ order.total_price }} EGP</strong><small>{{ order.get_status_display }}</small></div></div>
+            {% empty %}<p class="empty-state">Your first order is waiting for you.</p>{% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

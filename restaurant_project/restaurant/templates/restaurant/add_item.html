@@ -1,0 +1,123 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}{% if is_edit %}Edit Dish{% else %}Add New Dish{% endif %} - TastyBite Admin{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <div class="max-w-2xl mx-auto">
+        <div class="glass-panel p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold text-white m-0">
+                    <i class="fa-solid {% if is_edit %}fa-pen-to-square{% else %}fa-plus-circle{% endif %} text-warning me-2"></i>
+                    {% if is_edit %}Edit "{{ item.name }}"{% else %}Add New Dish to Menu{% endif %}
+                </h2>
+                <a href="{% url 'manage_items' %}" class="btn btn-glass btn-sm rounded-pill px-3"><i class="fa-solid fa-list me-1"></i> Manage Items</a>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger border-0 rounded-3">
+                    {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{% if is_edit %}{% url 'edit_item' item.pk %}{% else %}{% url 'add_item' %}{% endif %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">Dish Name (English) *</label>
+                        {{ form.name }}
+                        {% for error in form.name.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">Dish Name (Arabic)</label>
+                        {{ form.name_ar }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">Category *</label>
+                        {{ form.category }}
+                        {% for error in form.category.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">Price (EGP) *</label>
+                        {{ form.price }}
+                        {% for error in form.price.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label text-muted fw-semibold">Description (English) *</label>
+                        {{ form.description }}
+                        {% for error in form.description.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label text-muted fw-semibold">Description (Arabic)</label>
+                        {{ form.description_ar }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">Upload Dish Photo</label>
+                        {{ form.image_upload }}
+                        {% if is_edit and item.image_upload %}
+                            <div class="mt-2"><img src="{{ item.image_upload.url }}" style="width:70px;height:70px;object-fit:cover;" class="rounded-3 border border-secondary"></div>
+                        {% endif %}
+                        {% for error in form.image_upload.errors %}<div class="text-danger small mt-1">{{ error }}</div>{% endfor %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-semibold">... or Image URL</label>
+                        {{ form.image }}
+                    </div>
+
+                    {% if form.non_field_errors %}{% else %}
+                        {% for error in form.errors.image %}<div class="col-12 text-danger small">{{ error }}</div>{% endfor %}
+                    {% endif %}
+
+                    <div class="col-md-3">
+                        <label class="form-label text-muted fw-semibold">Calories (kcal)</label>
+                        {{ form.calories }}
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-muted fw-semibold">Prep Time (Mins)</label>
+                        {{ form.prep_time_mins }}
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label text-muted fw-semibold">Rating (0-5)</label>
+                        {{ form.rating }}
+                    </div>
+
+                    <div class="col-12 d-flex gap-4 mt-3">
+                        <div class="form-check">
+                            {{ form.is_popular }}
+                            <label class="form-check-label text-white fw-semibold" for="{{ form.is_popular.id_for_label }}">🔥 Popular Item</label>
+                        </div>
+                        <div class="form-check">
+                            {{ form.is_spicy }}
+                            <label class="form-check-label text-white fw-semibold" for="{{ form.is_spicy.id_for_label }}">🌶️ Spicy</label>
+                        </div>
+                        <div class="form-check">
+                            {{ form.is_vegetarian }}
+                            <label class="form-check-label text-white fw-semibold" for="{{ form.is_vegetarian.id_for_label }}">🌿 Vegetarian</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mt-4 d-flex gap-3">
+                        <button type="submit" class="btn btn-amber flex-grow-1 py-3 rounded-4 fw-bold fs-5 shadow-lg">
+                            {% if is_edit %}Save Changes{% else %}Save & Publish Dish{% endif %}
+                        </button>
+                        {% if is_edit %}
+                        <a href="{% url 'delete_item' item.pk %}" class="btn btn-outline-danger py-3 px-4 rounded-4 fw-bold">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

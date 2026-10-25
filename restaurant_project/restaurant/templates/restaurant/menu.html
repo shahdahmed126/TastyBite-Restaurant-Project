@@ -1,0 +1,140 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Full Menu - TastyBite Gourmet{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <!-- Menu Header & Live Search Bar -->
+    <div class="glass-panel p-4 mb-4">
+        <div class="row align-items-center g-3">
+            <div class="col-md-6">
+                <h1 class="fw-bold text-white mb-1" data-en="Our Artisanal Menu" data-ar="قائمة أطباقنا الفاخرة">Our Artisanal Menu</h1>
+                <p class="text-muted m-0" data-en="Hand-crafted dishes prepared with passion and fine ingredients" data-ar="أطباق فاخرة صُنعت بكل حب وشغف">Hand-crafted dishes prepared with passion and fine ingredients</p>
+            </div>
+            
+            <div class="col-md-6">
+                <form method="GET" action="{% url 'menu' %}" id="search-form" class="d-flex gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text border-0 text-muted" style="background: rgba(15, 23, 42, 0.8);"><i class="fa-solid fa-magnifying-glass text-warning"></i></span>
+                        <input type="text" name="search" class="form-control border-0 text-white shadow-none py-3" style="background: rgba(15, 23, 42, 0.8);" placeholder="Search food by name, ingredient, description..." value="{{ search_query }}" id="search-input">
+                    </div>
+                    <button type="submit" class="btn btn-amber px-4"><i class="fa-solid fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Bar: Categories, Dietary Badges, & Sorting -->
+    <div class="glass-panel p-3 mb-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            
+            <!-- Category Filter Pills -->
+            <div class="d-flex gap-2 overflow-auto py-1">
+                <a href="{% url 'menu' %}" class="btn btn-sm rounded-pill px-4 py-2 fw-bold {% if not selected_category %}btn-amber{% else %}btn-glass{% endif %}">
+                    <span data-en="All Dishes" data-ar="جميع الأطباق">All Dishes</span>
+                </a>
+                {% for cat in categories %}
+                    <a href="{% url 'menu' %}?category={{ cat.id }}{% if selected_dietary %}&dietary={{ selected_dietary }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}" 
+                       class="btn btn-sm rounded-pill px-4 py-2 fw-bold {% if selected_category == cat.id|stringformat:'s' %}btn-amber{% else %}btn-glass{% endif %}">
+                        <i class="fa-solid {{ cat.icon }} me-1 opacity-75"></i>
+                        <span data-en="{{ cat.name }}" data-ar="{{ cat.name_ar|default:cat.name }}">{{ cat.name }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <!-- Sorting & Dietary Controls -->
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <!-- Dietary Filter Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-glass btn-sm dropdown-toggle rounded-pill px-3 py-2" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-filter me-1 text-warning"></i>
+                        <span data-en="Filter" data-ar="تصفية">Filter</span>: 
+                        {% if selected_dietary == 'spicy' %}Spicy 🌶️{% elif selected_dietary == 'vegetarian' %}Vegetarian 🌿{% elif selected_dietary == 'popular' %}Popular 🔥{% else %}All{% endif %}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
+                        <li><a class="dropdown-menu-item dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}">All Items</a></li>
+                        <li><a class="dropdown-menu-item dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}dietary=popular">🔥 Popular Only</a></li>
+                        <li><a class="dropdown-menu-item dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}dietary=spicy">🌶️ Spicy Only</a></li>
+                        <li><a class="dropdown-menu-item dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}dietary=vegetarian">🌿 Vegetarian Only</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-glass btn-sm dropdown-toggle rounded-pill px-3 py-2" type="button" data-bs-toggle="dropdown">
+                        <i class="fa-solid fa-arrow-down-short-wide me-1 text-warning"></i>
+                        <span data-en="Sort" data-ar="ترتيب">Sort</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg">
+                        <li><a class="dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}sort=price_low">Price: Low to High</a></li>
+                        <li><a class="dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}sort=price_high">Price: High to Low</a></li>
+                        <li><a class="dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}sort=rating">Highest Rating ★</a></li>
+                        <li><a class="dropdown-item" href="{% url 'menu' %}?{% if selected_category %}category={{ selected_category }}&{% endif %}sort=prep_time">Fastest Prep Time ⏱️</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Menu Items Grid -->
+    <div class="row g-4" id="menu-items-grid">
+        {% for item in items %}
+        <div class="col-md-6 col-lg-3 menu-item-card">
+            <div class="glass-card h-100 d-flex flex-column">
+                <div class="food-img-wrapper">
+                    <a href="{% url 'item_detail' item.pk %}">
+                        <img src="{{ item.display_image }}" alt="{{ item.name }}" loading="lazy">
+                    </a>
+                    <div class="position-absolute top-0 start-0 p-3 d-flex gap-2">
+                        {% if item.is_spicy %}
+                            <span class="badge-tag badge-spicy"><i class="fa-solid fa-pepper-hot me-1"></i> Spicy</span>
+                        {% endif %}
+                        {% if item.is_vegetarian %}
+                            <span class="badge-tag badge-veg"><i class="fa-solid fa-seedling me-1"></i> Veg</span>
+                        {% endif %}
+                    </div>
+                    <div class="position-absolute top-0 end-0 p-3">
+                        <span class="badge-tag badge-rating"><i class="fa-solid fa-star me-1"></i> {{ item.rating }}</span>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-uppercase small fw-bold text-muted"><i class="fa-solid fa-tag me-1 text-warning"></i> {{ item.category.name }}</span>
+                            <span class="small text-muted"><i class="fa-solid fa-fire me-1 text-danger"></i> {{ item.calories }} kcal</span>
+                        </div>
+                        <a href="{% url 'item_detail' item.pk %}" class="text-decoration-none">
+                            <h5 class="fw-bold text-white mb-2" data-en="{{ item.name }}" data-ar="{{ item.name_ar|default:item.name }}">{{ item.name }}</h5>
+                        </a>
+                        <p class="text-muted small mb-3" data-en="{{ item.description|truncatewords:10 }}" data-ar="{{ item.description_ar|default:item.description|truncatewords:10 }}">
+                            {{ item.description|truncatewords:10 }}
+                        </p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary mt-3">
+                        <div>
+                            <span class="fs-5 fw-bold text-warning">{{ item.price }} <small class="fs-6 text-white-50">EGP</small></span>
+                            <small class="d-block text-muted" style="font-size: 0.75rem;"><i class="fa-solid fa-clock me-1"></i> {{ item.prep_time_mins }} mins</small>
+                        </div>
+                        <button onclick="addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-sm px-3 rounded-3">
+                            <i class="fa-solid fa-basket-shopping me-1"></i> <span data-en="Add" data-ar="أضف">Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="glass-panel p-5 max-w-lg mx-auto">
+                <i class="fa-solid fa-circle-exclamation fa-4x mb-3 text-warning"></i>
+                <h3 class="fw-bold text-white mb-2" data-en="No items found" data-ar="لا توجد وجبات تطابق البحث">No items found</h3>
+                <p class="text-muted mb-4" data-en="Try searching for another dish or reset your filter settings." data-ar="جرب البحث عن وجبة أخرى أو إعادة ضبط الفلتر.">Try searching for another dish or reset your filter settings.</p>
+                <a href="{% url 'menu' %}" class="btn btn-amber px-4 rounded-pill" data-en="Reset All Filters" data-ar="إعادة ضبط الفلتر">Reset All Filters</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

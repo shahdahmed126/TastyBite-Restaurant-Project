@@ -1,0 +1,106 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Order #{{ order.id }} Success - TastyBite Gourmet{% endblock %}
+
+{% block content %}
+<div class="py-5 text-center">
+    <div class="glass-panel p-4 p-md-5 mx-auto shadow-2xl position-relative" style="max-width: 800px;">
+        
+        <!-- Order Confirmed Icon -->
+        <div class="p-3 rounded-circle d-inline-flex mb-3" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+            <i class="fa-solid fa-circle-check fa-5x"></i>
+        </div>
+
+        <h1 class="display-5 fw-bold text-white mb-2" data-en="Thank You, {{ order.customer_name }}!" data-ar="شكراً لك، {{ order.customer_name }}!">Thank You, {{ order.customer_name }}!</h1>
+        <p class="lead text-muted mb-4" data-en="Your Order #{{ order.id }} has been received & is being prepared with passion!"
+           data-ar="تم استلام طلبك رقم #{{ order.id }} وهو الآن قيد التحضير بعناية فائقة!">
+            Your Order <strong>#{{ order.id }}</strong> has been received & is being prepared with passion!
+        </p>
+
+        <!-- Live Tracker Timeline Bar -->
+        <div class="p-4 rounded-4 mb-4 text-start border border-secondary" style="background: rgba(11, 15, 25, 0.9);">
+            <h6 class="fw-bold text-white mb-4 d-flex align-items-center justify-content-between">
+                <span><i class="fa-solid fa-radar me-2 text-warning"></i> <span data-en="Live Order Status" data-ar="تتبع حالة الطلب المباشرة">Live Order Status</span></span>
+                <span class="badge bg-warning text-dark font-mono px-3 py-2 rounded-pill">Est. Time: 25-30 Mins</span>
+            </h6>
+
+            <div class="position-relative py-3">
+                <div class="progress" style="height: 6px; background-color: #1e293b;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" 
+                         style="width: {% if order.status == 'PENDING' %}25%{% elif order.status == 'PREPARING' %}55%{% elif order.status == 'OUT_FOR_DELIVERY' %}85%{% else %}100%{% endif %};">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between position-relative mt-4">
+                    <div class="text-center">
+                        <div class="p-2 rounded-circle mx-auto mb-2 {% if order.status == 'PENDING' or order.status == 'PREPARING' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'DELIVERED' %}bg-warning text-dark{% else %}bg-secondary text-white-50{% endif %}" style="width: 40px; height: 40px; line-height: 24px;">
+                            <i class="fa-solid fa-file-invoice"></i>
+                        </div>
+                        <small class="d-block fw-bold text-white" data-en="Received" data-ar="تم الاستلام">Received</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="p-2 rounded-circle mx-auto mb-2 {% if order.status == 'PREPARING' or order.status == 'OUT_FOR_DELIVERY' or order.status == 'DELIVERED' %}bg-warning text-dark{% else %}bg-secondary text-white-50{% endif %}" style="width: 40px; height: 40px; line-height: 24px;">
+                            <i class="fa-solid fa-fire-burner"></i>
+                        </div>
+                        <small class="d-block fw-bold text-white" data-en="Preparing" data-ar="جاري التحضير">Preparing</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="p-2 rounded-circle mx-auto mb-2 {% if order.status == 'OUT_FOR_DELIVERY' or order.status == 'DELIVERED' %}bg-warning text-dark{% else %}bg-secondary text-white-50{% endif %}" style="width: 40px; height: 40px; line-height: 24px;">
+                            <i class="fa-solid fa-motorcycle"></i>
+                        </div>
+                        <small class="d-block fw-bold text-white" data-en="On The Way" data-ar="في الطريق">On The Way</small>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="p-2 rounded-circle mx-auto mb-2 {% if order.status == 'DELIVERED' %}bg-success text-white{% else %}bg-secondary text-white-50{% endif %}" style="width: 40px; height: 40px; line-height: 24px;">
+                            <i class="fa-solid fa-house-chimney-check"></i>
+                        </div>
+                        <small class="d-block fw-bold text-white" data-en="Delivered" data-ar="تم التسليم">Delivered</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Breakdown -->
+        <div class="p-4 rounded-4 text-start mb-4 border border-secondary" style="background: rgba(11, 15, 25, 0.7);">
+            <h5 class="fw-bold text-white mb-3 border-bottom border-secondary pb-2" data-en="Order Details" data-ar="تفاصيل الطلب">Order Details</h5>
+            <div class="row g-2 mb-3 text-muted small">
+                <div class="col-md-6"><strong>Phone:</strong> {{ order.phone }}</div>
+                <div class="col-md-6"><strong>Order Type:</strong> {{ order.get_order_type_display }}</div>
+                {% if order.address %}<div class="col-12"><strong>Address:</strong> {{ order.address }}</div>{% endif %}
+                {% if order.table_number %}<div class="col-12"><strong>Table Number:</strong> {{ order.table_number }}</div>{% endif %}
+            </div>
+
+            <h6 class="fw-bold text-white mb-2" data-en="Items Ordered:" data-ar="الوجبات المطلوبة:">Items Ordered:</h6>
+            <ul class="list-unstyled mb-3">
+                {% for item in order.items.all %}
+                <li class="d-flex justify-content-between text-muted border-bottom border-secondary py-2">
+                    <span>{{ item.quantity }}x {{ item.menu_item.name }}</span>
+                    <span class="text-warning fw-bold">{{ item.price }} EGP</span>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <div class="d-flex justify-content-between fs-4 fw-bold text-white pt-2 border-top border-secondary">
+                <span data-en="Total Paid:" data-ar="الإجمالي المدفوع:">Total Paid:</span>
+                <span class="text-warning">{{ order.total_price }} EGP</span>
+            </div>
+        </div>
+
+        <!-- Call to Actions -->
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="https://wa.me/201234567890?text=Hi%20TastyBite!%20I%20placed%20Order%20%23{{ order.id }}%20under%20the%20name%20{{ order.customer_name }}." 
+               target="_blank" class="btn btn-success btn-lg px-4 rounded-4 fw-bold">
+                <i class="fa-brands fa-whatsapp me-2 fs-5"></i> <span data-en="Send Receipt via WhatsApp" data-ar="إرسال الفاتورة للواتساب">Send Receipt via WhatsApp</span>
+            </a>
+
+            <a href="{% url 'menu' %}" class="btn btn-amber btn-lg px-4 rounded-4">
+                <i class="fa-solid fa-plus me-1"></i> <span data-en="Order Something Else" data-ar="طلب وجبة أخرى">Order Something Else</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

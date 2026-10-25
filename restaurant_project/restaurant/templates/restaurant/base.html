@@ -1,0 +1,810 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TastyBite - Luxury Gourmet Restaurant & Lounge{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Tajawal (Arabic) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0b0f19;
+            --bg-card: rgba(18, 26, 43, 0.75);
+            --bg-card-hover: rgba(28, 40, 65, 0.9);
+            --accent-amber: #ff6b00;
+            --accent-amber-glow: rgba(255, 107, 0, 0.4);
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #b6a58f;
+            --border-glow: rgba(255, 107, 0, 0.25);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif;
+        }
+
+        [dir="rtl"] {
+            font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(255, 107, 0, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.05) 0%, transparent 45%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-glow);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(255, 107, 0, 0.15);
+        }
+
+        /* Navbar Styling */
+        .navbar-custom {
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand-logo {
+            font-weight: 800;
+            font-size: 1.7rem;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-amber) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fire-icon-glow {
+            color: var(--accent-amber);
+            filter: drop-shadow(0 0 8px var(--accent-amber-glow));
+            animation: pulse-fire 2s infinite alternate;
+        }
+
+        @keyframes pulse-fire {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--accent-amber-glow)); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 15px var(--accent-amber)); }
+        }
+
+        .nav-link {
+            color: var(--text-main) !important;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 8px 16px !important;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-amber) !important;
+            background: rgba(255, 107, 0, 0.1);
+        }
+
+        /* Buttons */
+        .btn-amber {
+            background: linear-gradient(135deg, var(--accent-amber) 0%, #e05e00 100%);
+            color: #fff !important;
+            font-weight: 700;
+            border-radius: 14px;
+            padding: 12px 28px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-amber:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(255, 107, 0, 0.45);
+            background: linear-gradient(135deg, #ff7a1a 0%, #f06400 100%);
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main) !important;
+            border: 1px solid var(--border-subtle);
+            font-weight: 600;
+            border-radius: 14px;
+            padding: 12px 24px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--border-glow);
+            color: #fff !important;
+        }
+
+        /* Badge Styling */
+        .badge-cart-count {
+            background-color: var(--accent-amber);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-amber-glow);
+        }
+
+        /* Offcanvas Drawer */
+        .offcanvas-dark {
+            background-color: #0d1322;
+            color: var(--text-main);
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        /* Food Card Specs */
+        .food-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px 18px 0 0;
+            height: 210px;
+        }
+
+        .food-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .glass-card:hover .food-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .badge-tag {
+            backdrop-filter: blur(8px);
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .badge-spicy {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-veg {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-rating {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Toast Notifications */
+        .toast-custom {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--accent-amber);
+            color: #fff;
+            border-radius: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: #060912;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: auto;
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-amber);
+        }
+
+        .text-muted,
+        .form-label.text-muted {
+            color: #cbd5e1 !important;
+        }
+
+        /* Light restaurant theme */
+        :root {
+            --bg-dark: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-card-hover: #fff5e8;
+            --text-main: #29231f;
+            --text-muted: #75685d;
+            --border-subtle: rgba(77, 56, 39, 0.13);
+            --border-glow: rgba(255, 107, 0, 0.3);
+        }
+
+        body {
+            background-image: none;
+        }
+
+        .navbar-custom {
+            background: rgba(255, 248, 241, 0.96);
+            border-bottom-color: var(--border-subtle);
+        }
+
+        .navbar-brand-logo {
+            background: linear-gradient(135deg, #29231f 30%, var(--accent-amber) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .nav-link,
+        .btn-glass,
+        .navbar-toggler {
+            color: var(--text-main) !important;
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.75);
+            border-color: var(--border-subtle);
+        }
+
+        .btn-glass:hover {
+            background: #fff0dc;
+            color: var(--accent-amber) !important;
+        }
+
+        .glass-panel,
+        .glass-card {
+            box-shadow: 0 12px 30px rgba(91, 63, 38, 0.09);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 16px 36px rgba(217, 108, 63, 0.17);
+        }
+
+        .text-white,
+        .form-check-label.text-white {
+            color: var(--text-main) !important;
+        }
+
+        .kds-order-header .text-white {
+            color: #f8fafc !important;
+        }
+
+        .text-muted,
+        .form-label.text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .form-control,
+        .form-select,
+        .form-control:focus,
+        .form-select:focus {
+            background: #fff !important;
+            color: var(--text-main) !important;
+            border-color: #d8c9ba !important;
+        }
+
+        .offcanvas-dark {
+            background-color: #ffffff;
+            color: var(--text-main);
+        }
+
+        footer {
+            background: #2b211b;
+        }
+
+        .auth-shell {
+            max-width: 520px;
+            margin: 2rem auto;
+        }
+
+        .auth-card,
+        .account-panel,
+        .points-card {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            box-shadow: 0 18px 45px rgba(91, 63, 38, 0.11);
+        }
+
+        .auth-card { padding: 2.5rem; text-align: center; }
+        .auth-icon {
+            width: 58px;
+            height: 58px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 1.25rem;
+            border-radius: 18px;
+            background: #fff0dc;
+            color: var(--accent-amber);
+            font-size: 1.4rem;
+        }
+        .eyebrow {
+            color: var(--accent-amber);
+            font-size: .76rem;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        .auth-card h1, .account-header h1 { color: var(--text-main); font-weight: 800; }
+        .auth-subtitle, .account-header p { color: var(--text-muted); }
+        .auth-form { margin-top: 1.75rem; text-align: start; }
+        .auth-field { margin-bottom: 1rem; }
+        .auth-field label { display: block; color: var(--text-main); font-weight: 700; margin-bottom: .4rem; }
+        .auth-field input { width: 100%; padding: .8rem 1rem; border: 1px solid #d8c9ba; border-radius: 12px; }
+        .auth-error { display: block; color: #bd4d3b; margin-top: .35rem; }
+        .auth-switch { color: var(--text-muted); margin: 1.5rem 0 0; }
+        .auth-switch a, .panel-heading a { color: var(--accent-amber); font-weight: 800; text-decoration: none; }
+        .account-header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin: 1rem 0 2rem; }
+        .account-header h1 { margin: .35rem 0; }
+        .points-card { padding: 1.75rem; background: linear-gradient(145deg, #fff0dc, #ffffff); }
+        .points-card > i { color: var(--accent-gold); font-size: 2rem; display: block; margin-bottom: 1rem; }
+        .points-card span, .points-card small, .order-row small { color: var(--text-muted); display: block; }
+        .points-card strong { color: var(--accent-amber); display: block; font-size: 3.2rem; line-height: 1.1; margin: .35rem 0 .6rem; }
+        .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem; }
+        .panel-heading h2 { color: var(--text-main); font-size: 1.25rem; margin: 0; }
+        .account-panel { padding: 1.5rem; }
+        .order-row { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border-subtle); color: var(--text-main); }
+        .order-row:last-child { border-bottom: 0; }
+        .empty-state { color: var(--text-muted); margin: 1.25rem 0 .25rem; }
+
+        body.dark-mode {
+            --bg-dark: #0b0f19;
+            --bg-card: rgba(18, 26, 43, 0.75);
+            --bg-card-hover: rgba(28, 40, 65, 0.9);
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(255, 107, 0, 0.25);
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(255, 107, 0, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.05) 0%, transparent 45%);
+        }
+
+        body.dark-mode .navbar-custom { background: rgba(11, 15, 25, 0.9); }
+        body.dark-mode .navbar-brand-logo {
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-amber) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        body.dark-mode .btn-glass { background: rgba(255, 255, 255, 0.05); color: #f8fafc !important; }
+        body.dark-mode .btn-glass:hover { background: rgba(255, 255, 255, 0.12); color: #fff !important; }
+        body.dark-mode .glass-panel,
+        body.dark-mode .glass-card,
+        body.dark-mode .auth-card,
+        body.dark-mode .account-panel,
+        body.dark-mode .points-card { background: var(--bg-card); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); }
+        body.dark-mode .glass-card:hover { background: var(--bg-card-hover); }
+        body.dark-mode .text-white,
+        body.dark-mode .form-check-label.text-white { color: var(--text-main) !important; }
+        body.dark-mode .text-muted,
+        body.dark-mode .form-label.text-muted { color: var(--text-muted) !important; }
+        body.dark-mode .form-control,
+        body.dark-mode .form-select,
+        body.dark-mode .form-control:focus,
+        body.dark-mode .form-select:focus { background: rgba(11, 15, 25, 0.8) !important; color: #f8fafc !important; border-color: #475569 !important; }
+        body.dark-mode .offcanvas-dark { background-color: #0d1322; color: #f8fafc; }
+        body.dark-mode footer { background: #060912; }
+        body.dark-mode .auth-card h1,
+        body.dark-mode .account-header h1,
+        body.dark-mode .auth-field label,
+        body.dark-mode .panel-heading h2,
+        body.dark-mode .order-row { color: #f8fafc; }
+        body.dark-mode .points-card { background: linear-gradient(145deg, rgba(255, 107, 0, 0.15), rgba(18, 26, 43, 0.9)); }
+
+        @media (max-width: 576px) {
+            .auth-card { padding: 1.75rem 1.25rem; }
+            .account-header { align-items: start; flex-direction: column; }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Main Header & Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-custom py-3">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-logo" href="{% url 'home' %}">
+                <i class="fa-solid fa-fire-flame-curved fire-icon-glow fs-3"></i>
+                <span>TastyBite</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-2 d-lg-none">
+                <!-- Mobile Cart Toggle -->
+                <button class="btn btn-glass px-3 py-2 position-relative me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                    <i class="fa-solid fa-basket-shopping text-warning"></i>
+                    <span class="badge-cart-count position-absolute top-0 start-100 translate-middle cart-badge-num">
+                        {{ request.session.cart|length|default:"0" }}
+                    </span>
+                </button>
+
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fa-solid fa-bars fs-3"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto align-items-center">
+                    <li class="nav-item me-1">
+                        <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house me-1 opacity-75"></i> <span data-en="Home" data-ar="الرئيسية">Home</span></a>
+                    </li>
+                    <li class="nav-item me-1">
+                        <a class="nav-link" href="{% url 'menu' %}"><i class="fa-solid fa-utensils me-1 opacity-75"></i> <span data-en="Menu" data-ar="قائمة الطعام">Menu</span></a>
+                    </li>
+                    <li class="nav-item me-1">
+                        <a class="nav-link" href="{% url 'reservation' %}"><i class="fa-solid fa-calendar-check me-1 opacity-75"></i> <span data-en="Book Table" data-ar="حجز طاولة">Book Table</span></a>
+                    </li>
+                    <li class="nav-item me-1">
+                        <a class="nav-link" href="{% url 'track_order' %}"><i class="fa-solid fa-location-crosshairs me-1 opacity-75"></i> <span data-en="Track Order" data-ar="تتبع طلبك">Track Order</span></a>
+                    </li>
+
+                    {% if request.user.is_staff %}
+                    <li class="nav-item me-1">
+                        <a class="nav-link text-warning fw-bold" href="{% url 'kitchen_dashboard' %}"><i class="fa-solid fa-kitchen-set me-1"></i> Kitchen KDS</a>
+                    </li>
+                    <li class="nav-item me-1">
+                        <a class="nav-link text-warning fw-bold" href="{% url 'manage_items' %}"><i class="fa-solid fa-utensils me-1"></i> Manage Menu</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                    <!-- Language Switcher Button -->
+                    <button class="btn btn-sm btn-glass rounded-pill px-3 py-2" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle dark mode">
+                        <i class="fa-solid fa-moon me-1"></i> <span id="theme-label">Dark</span>
+                    </button>
+                    <button class="btn btn-sm btn-glass rounded-pill px-3 py-2 text-white" id="lang-toggle-btn" onclick="toggleLanguage()">
+                        <i class="fa-solid fa-globe text-warning me-1"></i> <span id="lang-label">العربية</span>
+                    </button>
+
+                    <!-- Cart Drawer Trigger Button -->
+                    <button class="btn btn-glass position-relative px-3 py-2 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                        <i class="fa-solid fa-basket-shopping text-warning me-2 fs-5"></i>
+                        <span data-en="Cart" data-ar="السلة">Cart</span>
+                        <span class="badge-cart-count ms-2 cart-badge-num">{{ request.session.cart|length|default:"0" }}</span>
+                    </button>
+
+                    <a href="{% url 'menu' %}" class="btn btn-amber py-2 px-4 fs-6">
+                        <i class="fa-solid fa-bolt me-1"></i> <span data-en="Order Now" data-ar="اطلب الآن">Order Now</span>
+                    </a>
+
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'account' %}" class="btn btn-glass py-2 px-3" title="My account">
+                            <i class="fa-solid fa-user me-1"></i><span>{{ request.user.customer_profile.points|default:0 }}</span>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-glass py-2 px-3">Log in</a>
+                        <a href="{% url 'signup' %}" class="btn btn-amber py-2 px-3">Sign up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slide-over Offcanvas Cart Drawer -->
+    <div class="offcanvas offcanvas-end offcanvas-dark" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header border-bottom border-secondary py-3">
+            <h5 class="offcanvas-title fw-bold d-flex align-items-center gap-2" id="cartOffcanvasLabel">
+                <i class="fa-solid fa-basket-shopping style-amber text-warning"></i>
+                <span data-en="Your Cart" data-ar="سلة مشترياتك">Your Cart</span>
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-4" id="offcanvas-cart-container">
+            <!-- Loaded dynamically via AJAX JS -->
+            <div class="text-center py-5 text-muted">
+                <i class="fa-solid fa-spinner fa-spin fa-3x mb-3 text-warning"></i>
+                <p>Loading Cart...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow-1">
+        <div class="container py-4">
+            <!-- Messages / Alerts -->
+            {% if messages %}
+                <div class="row">
+                    <div class="col-12">
+                        {% for message in messages %}
+                            <div class="alert alert-dismissible fade show border-0 text-white shadow-lg mb-4 glass-panel" style="background: rgba(255, 107, 0, 0.25); border-left: 4px solid var(--accent-amber) !important;" role="alert">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-bell text-warning fs-4 me-2"></i>
+                                    <div>{{ message }}</div>
+                                </div>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4">
+                    <a class="navbar-brand navbar-brand-logo mb-3 d-inline-block" href="{% url 'home' %}">
+                        <i class="fa-solid fa-fire-flame-curved fire-icon-glow fs-3"></i>
+                        <span>TastyBite</span>
+                    </a>
+                    <p class="text-muted small pe-lg-4 mb-4">
+                        <span data-en="Experience the finest artisanal dishes, woodfired pizzas, and charcoal grills prepared by master chefs using organic, premium ingredients."
+                              data-ar="استمتع بأشهى الأطباق العالمية والبيتزا الإيطالية والمشاوي الفاخرة المحضرة بأيدي كبار الطهاة من مكونات طازجة عالية الجودة.">
+                            Experience the finest artisanal dishes, woodfired pizzas, and charcoal grills prepared by master chefs using organic, premium ingredients.
+                        </span>
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-sm btn-glass rounded-circle p-2 px-3 text-white"><i class="fa-brands fa-instagram fs-5"></i></a>
+                        <a href="#" class="btn btn-sm btn-glass rounded-circle p-2 px-3 text-white"><i class="fa-brands fa-facebook-f fs-5"></i></a>
+                        <a href="https://wa.me/201234567890" target="_blank" class="btn btn-sm btn-glass rounded-circle p-2 px-3 text-success"><i class="fa-brands fa-whatsapp fs-5"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-white mb-3" data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="{% url 'home' %}" class="footer-link" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                        <li><a href="{% url 'menu' %}" class="footer-link" data-en="Our Full Menu" data-ar="قائمة الطعام">Our Full Menu</a></li>
+                        <li><a href="{% url 'reservation' %}" class="footer-link" data-en="Book a Table" data-ar="حجز طاولة">Book a Table</a></li>
+                        <li><a href="{% url 'track_order' %}" class="footer-link" data-en="Track Order" data-ar="تتبع الطلب">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <h6 class="fw-bold text-white mb-3" data-en="Working Hours" data-ar="أوقات العمل">Working Hours</h6>
+                    <ul class="list-unstyled text-muted small d-flex flex-column gap-2">
+                        <li><i class="fa-solid fa-clock text-warning me-2"></i> Mon - Thu: 12:00 PM - 01:00 AM</li>
+                        <li><i class="fa-solid fa-clock text-warning me-2"></i> Fri - Sun: 01:00 PM - 03:00 AM</li>
+                        <li><i class="fa-solid fa-motorcycle text-success me-2"></i> Delivery: 24/7 Service</li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3">
+                    <h6 class="fw-bold text-white mb-3" data-en="Visit Us / Contact" data-ar="تواصل معنا">Visit Us / Contact</h6>
+                    <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot text-danger me-2"></i> 45 Nile Corniche, Zamalek, Cairo</p>
+                    <p class="text-muted small mb-2"><i class="fa-solid fa-phone text-success me-2"></i> +20 123 456 7890</p>
+                    <p class="text-muted small mb-0"><i class="fa-solid fa-envelope text-info me-2"></i> orders@tastybite-gourmet.com</p>
+                </div>
+            </div>
+
+            <div class="border-top border-secondary pt-4 text-center text-muted small">
+                <p class="mb-1">© 2026 TastyBite Luxury Gourmet Restaurant & Lounge. All rights reserved.</p>
+                <p class="mb-0 text-white-50">Crafted with 🔥 for Computer Science Graduation Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Cart & Language JS Script -->
+    <script>
+        let currentLang = localStorage.getItem('site_lang') || 'en';
+        let currentTheme = localStorage.getItem('site_theme') || 'light';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            applyTheme(currentTheme);
+            applyLanguage(currentLang);
+            fetchCartDrawer();
+        });
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('site_theme', currentTheme);
+            applyTheme(currentTheme);
+        }
+
+        function applyTheme(theme) {
+            const themeButton = document.getElementById('theme-toggle-btn');
+            const themeLabel = document.getElementById('theme-label');
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+            if (themeButton) themeButton.querySelector('i').className = theme === 'dark' ? 'fa-solid fa-sun me-1' : 'fa-solid fa-moon me-1';
+            if (themeLabel) themeLabel.textContent = theme === 'dark' ? 'Light' : 'Dark';
+        }
+
+        function toggleLanguage() {
+            currentLang = (currentLang === 'en') ? 'ar' : 'en';
+            localStorage.setItem('site_lang', currentLang);
+            applyLanguage(currentLang);
+        }
+
+        function applyLanguage(lang) {
+            const root = document.getElementById('html-root');
+            const langLabel = document.getElementById('lang-label');
+
+            if (lang === 'ar') {
+                root.setAttribute('dir', 'rtl');
+                root.setAttribute('lang', 'ar');
+                if (langLabel) langLabel.textContent = 'English';
+            } else {
+                root.setAttribute('dir', 'ltr');
+                root.setAttribute('lang', 'en');
+                if (langLabel) langLabel.textContent = 'العربية';
+            }
+
+            // Toggle element texts with data-en and data-ar
+            document.querySelectorAll('[data-en][data-ar]').forEach(el => {
+                el.textContent = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+            });
+        }
+
+        function fetchCartDrawer() {
+            fetch("{% url 'get_cart_ajax' %}")
+                .then(res => res.json())
+                .then(data => {
+                    updateCartUI(data.cart_count, data.cart_items);
+                });
+        }
+
+        function addToCartAjax(itemId, btnElement) {
+            if (btnElement) {
+                btnElement.disabled = true;
+                btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+            }
+
+            fetch(`/api/cart/add/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updateCartUI(data.cart_count, data.cart_items);
+                    showToast(data.message || "Added to cart!");
+                }
+                if (btnElement) {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = `<i class="fa-solid fa-basket-shopping me-1"></i> ${currentLang === 'ar' ? 'أضف' : 'Add'}`;
+                }
+            }).catch(() => {
+                if (btnElement) btnElement.disabled = false;
+            });
+        }
+
+        function updateCartQuantityAjax(itemId, action) {
+            const formData = new FormData();
+            formData.append('action', action);
+
+            fetch(`/api/cart/update/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updateCartUI(data.cart_count, data.cart_items);
+                }
+            });
+        }
+
+        function updateCartUI(count, cartData) {
+            // Update badge counters
+            document.querySelectorAll('.cart-badge-num').forEach(el => {
+                el.textContent = count;
+            });
+
+            // Populate Offcanvas Drawer
+            const container = document.getElementById('offcanvas-cart-container');
+            if (!container) return;
+
+            if (!cartData || !cartData.items || cartData.items.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fa-solid fa-basket-shopping fa-4x text-muted mb-3 opacity-50"></i>
+                        <h5 class="fw-bold text-muted">${currentLang === 'ar' ? 'سلتك فارغة حالياً' : 'Your cart is empty'}</h5>
+                        <p class="small text-muted mb-4">${currentLang === 'ar' ? 'تصفح قائمة الطعام واطلب وجبتك المفضلة' : 'Explore menu & add your favorite dish'}</p>
+                        <a href="{% url 'menu' %}" class="btn btn-amber rounded-pill px-4" data-bs-dismiss="offcanvas">${currentLang === 'ar' ? 'تصفح المنيو' : 'Explore Menu'}</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let itemsHtml = `<div class="d-flex flex-column gap-3 overflow-auto pe-1" style="max-height: 60vh;">`;
+            cartData.items.forEach(item => {
+                itemsHtml += `
+                    <div class="d-flex align-items-center justify-content-between p-3 rounded-4 glass-card">
+                        <div class="d-flex align-items-center gap-3">
+                            ${item.image ? `<img src="${item.image}" class="rounded-3" style="width: 60px; height: 60px; object-fit: cover;">` : ''}
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">${currentLang === 'ar' ? item.name_ar : item.name}</h6>
+                                <span class="text-warning fw-bold">${item.price} EGP</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <button onclick="updateCartQuantityAjax(${item.id}, 'decrease')" class="btn btn-sm btn-glass rounded-circle px-2 py-1"><i class="fa-solid fa-minus"></i></button>
+                            <span class="fw-bold text-white px-2">${item.quantity}</span>
+                            <button onclick="updateCartQuantityAjax(${item.id}, 'increase')" class="btn btn-sm btn-glass rounded-circle px-2 py-1"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            itemsHtml += `</div>`;
+
+            let checkoutSection = `
+                <div class="border-top border-secondary pt-3 mt-3">
+                    <div class="d-flex justify-content-between fs-5 fw-bold text-white mb-3">
+                        <span>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</span>
+                        <span class="text-warning">${cartData.total_price} EGP</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'cart' %}" class="btn btn-glass w-50 py-3 rounded-4 fw-bold">${currentLang === 'ar' ? 'عرض السلة' : 'View Cart'}</a>
+                        <a href="{% url 'checkout' %}" class="btn btn-amber w-50 py-3 rounded-4 fw-bold">${currentLang === 'ar' ? 'إتمام الطلب' : 'Checkout'}</a>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = itemsHtml + checkoutSection;
+        }
+
+        function showToast(msg) {
+            let toastEl = document.getElementById('global-toast');
+            if (!toastEl) {
+                toastEl = document.createElement('div');
+                toastEl.id = 'global-toast';
+                toastEl.className = 'position-fixed bottom-0 end-0 p-4';
+                toastEl.style.zIndex = '9999';
+                document.body.appendChild(toastEl);
+            }
+
+            toastEl.innerHTML = `
+                <div class="toast show toast-custom p-3 shadow-lg" role="alert">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-success fs-4"></i>
+                        <div class="fw-bold text-white">${msg}</div>
+                    </div>
+                </div>
+            `;
+            setTimeout(() => { toastEl.innerHTML = ''; }, 3000);
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

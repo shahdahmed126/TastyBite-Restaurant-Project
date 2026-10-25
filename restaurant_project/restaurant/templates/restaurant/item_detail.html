@@ -1,0 +1,103 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}{{ item.name }} - TastyBite Gourmet{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <!-- Breadcrumb -->
+    <nav class="mb-4" aria-label="breadcrumb">
+        <ol class="breadcrumb text-muted small">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-warning text-decoration-none">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'menu' %}" class="text-warning text-decoration-none">Menu</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">{{ item.name }}</li>
+        </ol>
+    </nav>
+
+    <!-- Dish Showcase Card -->
+    <div class="glass-panel p-4 p-lg-5 mb-5">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6 text-center">
+                <div class="position-relative overflow-hidden rounded-4 shadow-2xl border border-secondary" style="max-height: 440px;">
+                    <img src="{{ item.display_image }}" alt="{{ item.name }}" class="img-fluid w-100 object-fit-cover">
+                    <div class="position-absolute top-0 start-0 p-3 d-flex gap-2">
+                        {% if item.is_spicy %}
+                            <span class="badge-tag badge-spicy"><i class="fa-solid fa-pepper-hot me-1"></i> Spicy</span>
+                        {% endif %}
+                        {% if item.is_vegetarian %}
+                            <span class="badge-tag badge-veg"><i class="fa-solid fa-seedling me-1"></i> Vegetarian</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-secondary text-uppercase px-3 py-2 rounded-pill fw-bold"><i class="fa-solid fa-tag me-1 text-warning"></i> {{ item.category.name }}</span>
+                    <span class="badge-tag badge-rating fs-6 px-3 py-1"><i class="fa-solid fa-star me-1"></i> {{ item.rating }} / 5.0</span>
+                </div>
+
+                <h1 class="display-5 fw-bold text-white mb-2" data-en="{{ item.name }}" data-ar="{{ item.name_ar|default:item.name }}">{{ item.name }}</h1>
+                <h4 class="text-warning fw-bold mb-4 display-6">{{ item.price }} <small class="fs-5 text-white-50">EGP</small></h4>
+
+                <p class="lead text-muted mb-4 fs-6" data-en="{{ item.description }}" data-ar="{{ item.description_ar|default:item.description }}">
+                    {{ item.description }}
+                </p>
+
+                <!-- Nutrition & Prep Metrics -->
+                <div class="row g-3 mb-4 py-3 border-top border-bottom border-secondary text-center">
+                    <div class="col-4">
+                        <div class="text-muted small mb-1"><i class="fa-solid fa-fire text-danger me-1"></i> Calories</div>
+                        <h6 class="fw-bold text-white m-0">{{ item.calories }} kcal</h6>
+                    </div>
+                    <div class="col-4 border-start border-end border-secondary">
+                        <div class="text-muted small mb-1"><i class="fa-solid fa-clock text-warning me-1"></i> Prep Time</div>
+                        <h6 class="fw-bold text-white m-0">{{ item.prep_time_mins }} Mins</h6>
+                    </div>
+                    <div class="col-4">
+                        <div class="text-muted small mb-1"><i class="fa-solid fa-shield-halved text-success me-1"></i> Quality</div>
+                        <h6 class="fw-bold text-white m-0">100% Fresh</h6>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="d-flex gap-3">
+                    <button onclick="addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-lg fs-6 px-4 py-3 rounded-4 flex-grow-1 shadow-lg">
+                        <i class="fa-solid fa-basket-shopping me-2"></i> <span data-en="Add to Cart" data-ar="أضف إلى السلة">Add to Cart</span>
+                    </button>
+                    <a href="{% url 'cart' %}" class="btn btn-glass btn-lg fs-6 px-4 py-3 rounded-4" data-en="View Cart" data-ar="عرض السلة">View Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Dishes Section -->
+    {% if related_items %}
+    <div class="py-4">
+        <h3 class="fw-bold text-white mb-4"><i class="fa-solid fa-utensils text-warning me-2"></i><span data-en="You Might Also Love" data-ar="قد يعجبك أيضاً">You Might Also Love</span></h3>
+        <div class="row g-4">
+            {% for r_item in related_items %}
+            <div class="col-md-4">
+                <div class="glass-card h-100 d-flex flex-column">
+                    <div class="food-img-wrapper">
+                        <a href="{% url 'item_detail' r_item.pk %}">
+                            <img src="{{ r_item.display_image }}" alt="{{ r_item.name }}">
+                        </a>
+                    </div>
+                    <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                        <div>
+                            <h6 class="fw-bold text-white mb-1">{{ r_item.name }}</h6>
+                            <p class="text-muted small mb-3">{{ r_item.description|truncatewords:8 }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center border-top border-secondary pt-2">
+                            <span class="fw-bold text-warning">{{ r_item.price }} EGP</span>
+                            <button onclick="addToCartAjax({{ r_item.id }}, this)" class="btn btn-amber btn-sm rounded-3">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

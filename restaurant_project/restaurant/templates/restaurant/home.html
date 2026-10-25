@@ -1,0 +1,504 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}TastyBite - Luxury Gourmet Experience{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  HERO SECTION                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="row align-items-center py-5 my-3 position-relative">
+    <div class="col-lg-6 mb-5 mb-lg-0">
+        <span class="badge bg-amber text-uppercase px-3 py-2 rounded-pill mb-3 fw-bold tracking-wider" style="background: rgba(255, 107, 0, 0.2); color: var(--accent-amber); border: 1px solid var(--accent-amber);">
+            🔥 <span data-en="Gourmet Dining &amp; Fast Delivery" data-ar="مطعم فاخر وتوصيل سريع">Gourmet Dining &amp; Fast Delivery</span>
+        </span>
+        <h1 class="display-3 fw-extrabold text-white mb-4 lh-sm">
+            <span data-en="Exquisite Flavor" data-ar="طعم ساحر">Exquisite Flavor</span> <br>
+            <span style="color: var(--accent-amber);" data-en="Crafted To Perfection" data-ar="يُصنع بإتقان رفيع">Crafted To Perfection</span>
+        </h1>
+        <p class="lead text-muted mb-4 fs-5 pe-lg-3" data-en="Indulge in hand-crafted gourmet burgers, woodfired pizzas, prime charcoal steaks, fresh seafood and artisanal cocktails — all created by world-class chefs and delivered in 30 minutes."
+           data-ar="استمتع بأشهى قطع الستيك، والبيتزا الإيطالية، والبرجر الفاخر، والمأكولات البحرية الطازجة — محضرة يومياً بأحدث تقنيات الطهي وتسليم خلال 30 دقيقة.">
+            Indulge in hand-crafted gourmet burgers, woodfired pizzas, prime charcoal steaks, fresh seafood and artisanal cocktails — all created by world-class chefs and delivered in 30 minutes.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+            <a href="{% url 'menu' %}" class="btn btn-amber btn-lg fs-6"><i class="fa-solid fa-utensils me-2"></i> <span data-en="Explore Full Menu" data-ar="تصفح قائمة الطعام">Explore Full Menu</span></a>
+            <a href="{% url 'reservation' %}" class="btn btn-glass btn-lg fs-6"><i class="fa-solid fa-calendar-check me-2 text-warning"></i> <span data-en="Book a Table" data-ar="احجز طاولتك">Book a Table</span></a>
+        </div>
+
+        <!-- Highlights Pills -->
+        <div class="d-flex gap-4 mt-5 pt-3 border-top border-secondary opacity-90">
+            <div>
+                <h4 class="fw-bold text-white m-0">30 <small class="fs-6 text-warning">Min</small></h4>
+                <span class="text-muted small" data-en="Fast Delivery" data-ar="توصيل سريع">Fast Delivery</span>
+            </div>
+            <div class="border-start border-secondary ps-4">
+                <h4 class="fw-bold text-white m-0">4.9 ★</h4>
+                <span class="text-muted small" data-en="Top Rating" data-ar="تقييم ممتاز">Top Rating</span>
+            </div>
+            <div class="border-start border-secondary ps-4">
+                <h4 class="fw-bold text-white m-0">15K+</h4>
+                <span class="text-muted small" data-en="Happy Guests" data-ar="عميل سعيد">Happy Guests</span>
+            </div>
+            <div class="border-start border-secondary ps-4">
+                <h4 class="fw-bold text-white m-0">{{ stats.items_count }}+</h4>
+                <span class="text-muted small" data-en="Dishes" data-ar="طبق شهي">Dishes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Feature Image Card -->
+    <div class="col-lg-6">
+        <div class="position-relative">
+            <div class="glass-panel p-3 overflow-hidden shadow-2xl" style="transform: rotate(1deg);">
+                <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=80" alt="Gourmet Platter" class="img-fluid rounded-4 shadow-lg w-100" style="max-height: 480px; object-fit: cover;">
+            </div>
+
+            <!-- Floating Badge Widget 1 -->
+            <div class="position-absolute top-0 start-0 translate-middle-y glass-panel p-3 d-none d-sm-flex align-items-center gap-3 shadow-lg" style="background: rgba(11, 15, 25, 0.95); border: 1px solid var(--accent-amber);">
+                <div class="p-3 rounded-circle" style="background: rgba(255, 107, 0, 0.2); color: var(--accent-amber);">
+                    <i class="fa-solid fa-trophy fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-white m-0" data-en="Award Winning Chefs" data-ar="طهاة عالميون">Award Winning Chefs</h6>
+                    <small class="text-warning">Gourmet Quality</small>
+                </div>
+            </div>
+
+            <!-- Floating Badge Widget 2 -->
+            <div class="position-absolute bottom-0 end-0 translate-middle-y glass-panel p-3 d-none d-sm-flex align-items-center gap-3 shadow-lg" style="background: rgba(11, 15, 25, 0.95); border: 1px solid var(--accent-green);">
+                <div class="p-3 rounded-circle" style="background: rgba(16, 185, 129, 0.2); color: #10b981;">
+                    <i class="fa-solid fa-leaf fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-white m-0" data-en="100% Organic &amp; Fresh" data-ar="مكونات طازجة 100%">100% Organic &amp; Fresh</h6>
+                    <small class="text-success">Farm to Table</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- MARQUEE SCROLLING STRIP                                -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-3 my-2 overflow-hidden" style="border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(255,107,0,0.05);">
+    <div class="d-flex gap-5 marquee-track" style="white-space:nowrap; animation: marqueeScroll 30s linear infinite;">
+        {% for item in "123456789012" %}
+        <span class="text-muted fw-bold text-uppercase small me-4">
+            <i class="fa-solid fa-star text-warning me-2"></i>Gourmet Burgers
+            <span class="mx-3 text-warning">✦</span>
+            <i class="fa-solid fa-pizza-slice text-warning me-2"></i>Artisanal Pizzas
+            <span class="mx-3 text-warning">✦</span>
+            <i class="fa-solid fa-fish text-warning me-2"></i>Fresh Seafood
+            <span class="mx-3 text-warning">✦</span>
+            <i class="fa-solid fa-mug-hot text-warning me-2"></i>Hot Beverages
+            <span class="mx-3 text-warning">✦</span>
+            <i class="fa-solid fa-cake-candles text-warning me-2"></i>Heavenly Desserts
+            <span class="mx-3 text-warning">✦</span>
+        </span>
+        {% endfor %}
+    </div>
+</div>
+<style>
+@keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- FOOD CATEGORIES SECTION                                -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <span class="text-warning fw-bold text-uppercase small tracking-widest" data-en="Delicious Categories" data-ar="أصنافنا المميزة">Delicious Categories</span>
+            <h2 class="display-6 fw-bold text-white m-0" data-en="Explore Our Menu" data-ar="استكشف القائمة">Explore Our Menu</h2>
+        </div>
+        <a href="{% url 'menu' %}" class="btn btn-glass btn-sm rounded-pill px-4" data-en="View All Menu" data-ar="عرض الكل">View All Menu <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    </div>
+
+    <div class="row g-3">
+        {% for cat in categories %}
+        <div class="col-6 col-md-4 col-lg-2">
+            <a href="{% url 'menu' %}?category={{ cat.id }}" class="text-decoration-none">
+                <div class="glass-card p-4 text-center h-100 d-flex flex-column align-items-center justify-content-center" style="transition: all 0.3s ease;">
+                    <div class="p-3 rounded-circle mb-3" style="background: rgba(255, 107, 0, 0.12); color: var(--accent-amber);">
+                        <i class="fa-solid {{ cat.icon|default:'fa-utensils' }} fa-2x"></i>
+                    </div>
+                    <h6 class="fw-bold text-white mb-1" data-en="{{ cat.name }}" data-ar="{{ cat.name_ar|default:cat.name }}">{{ cat.name }}</h6>
+                    <small class="text-muted">{{ cat.items.count }} Dishes</small>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <p class="text-muted">No categories available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- POPULAR SIGNATURE DISHES                               -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5" id="popular-section">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <span class="text-warning fw-bold text-uppercase small tracking-widest" data-en="Chef's Selection" data-ar="اختيارات الشيف">Chef's Selection</span>
+            <h2 class="display-6 fw-bold text-white m-0" data-en="Popular Signature Dishes" data-ar="الأطباق الأكثر طلبًا">Popular Signature Dishes</h2>
+        </div>
+        <a href="{% url 'menu' %}?dietary=popular" class="btn btn-amber btn-sm rounded-pill px-4" data-en="See All Popular" data-ar="عرض الأكثر شعبية">See All Popular</a>
+    </div>
+
+    <div class="row g-4">
+        {% for item in popular_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card h-100 d-flex flex-column">
+                <div class="food-img-wrapper">
+                    <a href="{% url 'item_detail' item.pk %}">
+                        <img src="{{ item.display_image }}" alt="{{ item.name }}" loading="lazy">
+                    </a>
+                    <div class="position-absolute top-0 start-0 p-3 d-flex gap-2">
+                        {% if item.is_spicy %}
+                            <span class="badge-tag badge-spicy"><i class="fa-solid fa-pepper-hot me-1"></i> Spicy</span>
+                        {% endif %}
+                        {% if item.is_vegetarian %}
+                            <span class="badge-tag badge-veg"><i class="fa-solid fa-seedling me-1"></i> Veg</span>
+                        {% endif %}
+                    </div>
+                    <div class="position-absolute top-0 end-0 p-3">
+                        <span class="badge-tag badge-rating"><i class="fa-solid fa-star me-1"></i> {{ item.rating }}</span>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-uppercase small fw-bold text-muted"><i class="fa-solid fa-tag me-1 text-warning"></i> {{ item.category.name }}</span>
+                            <span class="small text-muted"><i class="fa-solid fa-fire me-1 text-danger"></i> {{ item.calories }} kcal</span>
+                        </div>
+                        <a href="{% url 'item_detail' item.pk %}" class="text-decoration-none">
+                            <h5 class="fw-bold text-white mb-2" data-en="{{ item.name }}" data-ar="{{ item.name_ar|default:item.name }}">{{ item.name }}</h5>
+                        </a>
+                        <p class="text-muted small mb-3" data-en="{{ item.description|truncatewords:14 }}" data-ar="{{ item.description_ar|default:item.description|truncatewords:14 }}">
+                            {{ item.description|truncatewords:14 }}
+                        </p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary mt-3">
+                        <div>
+                            <span class="fs-4 fw-bold text-warning">{{ item.price }} <small class="fs-6 text-white-50">EGP</small></span>
+                            <small class="d-block text-muted" style="font-size: 0.75rem;"><i class="fa-solid fa-clock me-1"></i> {{ item.prep_time_mins }} mins</small>
+                        </div>
+                        <button onclick="addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-sm px-3 rounded-3">
+                            <i class="fa-solid fa-basket-shopping me-1"></i> <span data-en="Add to Cart" data-ar="أضف للسلة">Add to Cart</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No popular items available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- WHY CHOOSE US - FEATURES SECTION                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="text-center mb-5">
+        <span class="text-warning fw-bold text-uppercase small tracking-widest">Why TastyBite?</span>
+        <h2 class="display-6 fw-bold text-white mt-1" data-en="The Finest Dining Experience" data-ar="تجربة الطعام الأرقى">The Finest Dining Experience</h2>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="glass-card p-4 text-center h-100" style="border-top: 3px solid var(--accent-amber);">
+                <div class="mb-3 fs-1">👨‍🍳</div>
+                <h5 class="fw-bold text-white" data-en="Award-Winning Chefs" data-ar="طهاة حاصلون على جوائز">Award-Winning Chefs</h5>
+                <p class="text-muted small" data-en="Our chefs trained at Michelin-starred restaurants around the world to deliver unmatched flavors." data-ar="طهاؤنا تدربوا في مطاعم ميشلان حول العالم لتقديم نكهات لا مثيل لها.">Our chefs trained at Michelin-starred restaurants around the world to deliver unmatched flavors.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="glass-card p-4 text-center h-100" style="border-top: 3px solid #10b981;">
+                <div class="mb-3 fs-1">🌿</div>
+                <h5 class="fw-bold text-white" data-en="100% Fresh Ingredients" data-ar="مكونات طازجة 100%">100% Fresh Ingredients</h5>
+                <p class="text-muted small" data-en="We source locally and import premium ingredients daily. No freezing, no compromises." data-ar="نحصل على مكونات محلية ونستورد مكونات ممتازة يومياً. لا تجميد، لا تنازلات.">We source locally and import premium ingredients daily. No freezing, no compromises.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="glass-card p-4 text-center h-100" style="border-top: 3px solid #3b82f6;">
+                <div class="mb-3 fs-1">🛵</div>
+                <h5 class="fw-bold text-white" data-en="30-Min Guaranteed Delivery" data-ar="توصيل مضمون في 30 دقيقة">30-Min Guaranteed Delivery</h5>
+                <p class="text-muted small" data-en="Hot, fresh and on time — every single order. Tracked in real-time on your phone." data-ar="ساخن، طازج وفي الوقت المحدد — لكل طلب. تتبعه فوراً على هاتفك.">Hot, fresh and on time — every single order. Tracked in real-time on your phone.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="glass-card p-4 text-center h-100" style="border-top: 3px solid #a855f7;">
+                <div class="mb-3 fs-1">💳</div>
+                <h5 class="fw-bold text-white" data-en="Easy Payment Options" data-ar="طرق دفع سهلة">Easy Payment Options</h5>
+                <p class="text-muted small" data-en="Pay by cash, credit card or Vodafone Cash — whatever works best for you." data-ar="ادفع كاش، بالكارت أو فودافون كاش — ما يناسبك تماماً.">Pay by cash, credit card or Vodafone Cash — whatever works best for you.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- CHEF'S SPECIALS HIGHLIGHTED SECTION                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <span class="text-warning fw-bold text-uppercase small tracking-widest">🌟 Top Rated</span>
+            <h2 class="display-6 fw-bold text-white m-0" data-en="Chef's Finest Creations" data-ar="أفضل إبداعات الشيف">Chef's Finest Creations</h2>
+        </div>
+        <a href="{% url 'menu' %}?sort=rating" class="btn btn-glass btn-sm rounded-pill px-4">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
+        {% for item in chef_specials %}
+        <div class="col-md-6 col-lg-3">
+            <div class="glass-card h-100 overflow-hidden position-relative" style="cursor:pointer;" onclick="window.location='{% url 'item_detail' item.pk %}'">
+                <!-- Image -->
+                <div style="height:200px; overflow:hidden;">
+                    <img src="{{ item.display_image }}" alt="{{ item.name }}" class="w-100 h-100" style="object-fit:cover; transition: transform 0.4s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'">
+                </div>
+                <!-- Gold ribbon -->
+                <div class="position-absolute top-0 end-0 m-0" style="width:0; height:0; border-style:solid; border-width:0 60px 60px 0; border-color:transparent var(--accent-amber) transparent transparent;">
+                    <span class="position-absolute text-dark fw-bold" style="top:8px; right:-52px; font-size:0.65rem; transform:rotate(45deg);">TOP</span>
+                </div>
+                <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <small class="text-warning fw-bold"><i class="fa-solid fa-star me-1"></i>{{ item.rating }}</small>
+                        <small class="text-muted"><i class="fa-solid fa-clock me-1"></i>{{ item.prep_time_mins }}m</small>
+                    </div>
+                    <h6 class="fw-bold text-white mb-1">{{ item.name }}</h6>
+                    <p class="text-muted small mb-2">{{ item.description|truncatewords:10 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-warning">{{ item.price }} EGP</span>
+                        <button onclick="event.stopPropagation(); addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-sm px-2 py-1 rounded-2" style="font-size:0.78rem;">
+                            <i class="fa-solid fa-plus me-1"></i>Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- STATS COUNTER BANNER                                   -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-4 my-2">
+    <div class="glass-panel p-4" style="background: linear-gradient(135deg, rgba(255,107,0,0.08) 0%, rgba(11,15,25,0.9) 100%); border: 1px solid rgba(255,107,0,0.3);">
+        <div class="row text-center g-4">
+            <div class="col-6 col-md-3">
+                <div class="p-3">
+                    <div class="fs-1 fw-extrabold text-warning mb-1">15K+</div>
+                    <div class="text-muted" data-en="Happy Customers" data-ar="عميل سعيد">Happy Customers</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 border-start border-secondary">
+                    <div class="fs-1 fw-extrabold text-warning mb-1">{{ stats.items_count }}+</div>
+                    <div class="text-muted" data-en="Menu Items" data-ar="طبق في القائمة">Menu Items</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 border-start border-secondary">
+                    <div class="fs-1 fw-extrabold text-warning mb-1">4.9★</div>
+                    <div class="text-muted" data-en="Average Rating" data-ar="متوسط التقييم">Average Rating</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 border-start border-secondary">
+                    <div class="fs-1 fw-extrabold text-warning mb-1">30</div>
+                    <div class="text-muted" data-en="Mins Delivery" data-ar="دقيقة توصيل">Mins Delivery</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- DRINKS SHOWCASE                                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <span class="text-warning fw-bold text-uppercase small tracking-widest">🥤 Refreshing</span>
+            <h2 class="display-6 fw-bold text-white m-0" data-en="Signature Drinks & Juices" data-ar="مشروباتنا المميزة وعصائر">Signature Drinks &amp; Juices</h2>
+        </div>
+        <a href="{% url 'menu' %}" class="btn btn-glass btn-sm rounded-pill px-4">Explore Drinks <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    </div>
+
+    <div class="row g-3">
+        {% for item in drinks_items %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="glass-card text-center p-3 h-100">
+                <div style="height:150px; overflow:hidden; border-radius:12px; margin-bottom:12px;">
+                    <img src="{{ item.display_image }}" alt="{{ item.name }}" class="w-100 h-100" style="object-fit:cover;">
+                </div>
+                <h6 class="fw-bold text-white mb-1 small">{{ item.name }}</h6>
+                <p class="text-muted" style="font-size:0.75rem; margin-bottom:8px;">{{ item.description|truncatewords:8 }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-auto">
+                    <span class="text-warning fw-bold small">{{ item.price }} EGP</span>
+                    <button onclick="addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-sm px-2 py-1 rounded-2" style="font-size:0.75rem;">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No drinks available. Run populate_db.py to add items.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- DESSERTS SHOWCASE                                      -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <span class="text-warning fw-bold text-uppercase small tracking-widest">🍰 Sweet Endings</span>
+            <h2 class="display-6 fw-bold text-white m-0" data-en="Heavenly Desserts" data-ar="حلوياتنا الرائعة">Heavenly Desserts</h2>
+        </div>
+        <a href="{% url 'menu' %}" class="btn btn-glass btn-sm rounded-pill px-4">All Desserts <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    </div>
+
+    <div class="row g-4">
+        {% for item in desserts_items %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card overflow-hidden h-100" style="cursor:pointer;" onclick="window.location='{% url 'item_detail' item.pk %}'">
+                <div class="position-relative" style="height:200px; overflow:hidden;">
+                    <img src="{{ item.display_image }}" alt="{{ item.name }}" class="w-100 h-100" style="object-fit:cover; transition: transform 0.4s;" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'">
+                    <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(to top, rgba(11,15,25,0.95) 0%, transparent 100%);">
+                        <h6 class="fw-bold text-white mb-0">{{ item.name }}</h6>
+                    </div>
+                </div>
+                <div class="p-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-warning fw-bold">{{ item.price }} EGP</span>
+                        <div class="text-muted small"><i class="fa-solid fa-star text-warning me-1"></i>{{ item.rating }}</div>
+                    </div>
+                    <button onclick="event.stopPropagation(); addToCartAjax({{ item.id }}, this)" class="btn btn-amber btn-sm rounded-3">
+                        <i class="fa-solid fa-basket-shopping me-1"></i>Add
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No desserts available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TESTIMONIALS                                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="text-center mb-5">
+        <span class="text-warning fw-bold text-uppercase small tracking-widest">💬 Reviews</span>
+        <h2 class="display-6 fw-bold text-white mt-1" data-en="What Our Guests Say" data-ar="ما يقوله ضيوفنا">What Our Guests Say</h2>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="text-warning fs-4 mb-3">★★★★★</div>
+                <p class="text-muted fst-italic">"The Truffle Burger was an absolute masterpiece. Never had anything like it in Cairo. The delivery was also super fast!"</p>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark" style="width:42px; height:42px; background:var(--accent-amber); font-size:1.1rem;">A</div>
+                    <div>
+                        <h6 class="fw-bold text-white mb-0">Ahmed Hassan</h6>
+                        <small class="text-muted">Regular Customer</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="text-warning fs-4 mb-3">★★★★★</div>
+                <p class="text-muted fst-italic">"من أحسن المطاعم اللي جربتها! الكنافة الكريمة والمولتن كيك حاجة من الآخر. هاتجي تاني وتالت!"</p>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark" style="width:42px; height:42px; background:#10b981; font-size:1.1rem;">م</div>
+                    <div>
+                        <h6 class="fw-bold text-white mb-0">منى إبراهيم</h6>
+                        <small class="text-muted">عميلة دائمة</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div class="text-warning fs-4 mb-3">★★★★★</div>
+                <p class="text-muted fst-italic">"Ordered the Seafood Platter Royale for a family dinner — it was STUNNING. Beautiful presentation and incredibly fresh. 10/10!"</p>
+                <div class="d-flex align-items-center gap-3 mt-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-dark" style="width:42px; height:42px; background:#3b82f6; font-size:1.1rem;">K</div>
+                    <div>
+                        <h6 class="fw-bold text-white mb-0">Karim El-Sayed</h6>
+                        <small class="text-muted">Food Blogger</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- TABLE BOOKING CTA BANNER                               -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-5">
+    <div class="glass-panel p-5 text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(11, 15, 25, 0.95) 100%); border: 1px solid var(--accent-amber);">
+        <div class="max-w-xl mx-auto position-relative z-1 py-3">
+            <span class="text-warning fw-bold text-uppercase tracking-widest me-1" data-en="Reserve Your Seat" data-ar="احجز مقعدك الفاخر">Reserve Your Seat</span>
+            <h2 class="display-5 fw-extrabold text-white mb-3" data-en="Plan a Special Culinary Evening" data-ar="خطط لأمسية طهي استثنائية">Plan a Special Culinary Evening</h2>
+            <p class="text-muted mb-4 fs-5" data-en="Whether it's a romantic dinner or a family gathering, reserve your table online in under 1 minute."
+               data-ar="سواء كانت عشاءً رومانسيًا أو تجمعًا عائليًا، احجز طاولتك أونلاين في أقل من دقيقة.">
+                Whether it's a romantic dinner or a family gathering, reserve your table online in under 1 minute.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{% url 'reservation' %}" class="btn btn-amber btn-lg fs-6 px-5 py-3 rounded-pill shadow-lg"><i class="fa-solid fa-chair me-2"></i> <span data-en="Reserve Table Now" data-ar="احجز طاولة الآن">Reserve Table Now</span></a>
+                <a href="{% url 'menu' %}" class="btn btn-glass btn-lg fs-6 px-5 py-3 rounded-pill"><i class="fa-solid fa-utensils me-2"></i> <span data-en="Order Online" data-ar="اطلب أونلاين">Order Online</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- DELIVERY INFO STRIP                                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="py-4 mb-3">
+    <div class="row g-4 text-center">
+        <div class="col-6 col-md-3">
+            <div class="glass-card p-4">
+                <i class="fa-solid fa-phone-volume text-warning fs-2 mb-3 d-block"></i>
+                <h6 class="fw-bold text-white" data-en="Order by Phone" data-ar="اطلب بالتليفون">Order by Phone</h6>
+                <p class="text-muted small mb-0">+20 100 000 0000</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="glass-card p-4">
+                <i class="fa-brands fa-whatsapp text-success fs-2 mb-3 d-block"></i>
+                <h6 class="fw-bold text-white" data-en="WhatsApp Orders" data-ar="اطلب عبر واتساب">WhatsApp Orders</h6>
+                <p class="text-muted small mb-0">+20 100 000 0000</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="glass-card p-4">
+                <i class="fa-solid fa-clock text-warning fs-2 mb-3 d-block"></i>
+                <h6 class="fw-bold text-white" data-en="Working Hours" data-ar="ساعات العمل">Working Hours</h6>
+                <p class="text-muted small mb-0">Daily 10AM – 2AM</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="glass-card p-4">
+                <i class="fa-solid fa-location-dot text-warning fs-2 mb-3 d-block"></i>
+                <h6 class="fw-bold text-white" data-en="Our Location" data-ar="موقعنا">Our Location</h6>
+                <p class="text-muted small mb-0">Cairo, Egypt 🇪🇬</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

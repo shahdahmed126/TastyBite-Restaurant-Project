@@ -1,0 +1,26 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Create Account - TastyBite{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+    <div class="auth-card">
+        <div class="auth-icon"><i class="fa-solid fa-user-plus"></i></div>
+        <span class="eyebrow">TastyBite Rewards</span>
+        <h1>Create your account</h1>
+        <p class="auth-subtitle">Join us, collect points, and enjoy every order.</p>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="auth-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}<small class="auth-error">{{ error }}</small>{% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-amber w-100">Create Account <i class="fa-solid fa-arrow-right ms-2"></i></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    </div>
+</div>
+{% endblock %}

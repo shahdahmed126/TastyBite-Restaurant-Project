@@ -1,0 +1,90 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Your Shopping Cart - TastyBite Gourmet{% endblock %}
+
+{% block content %}
+<div class="py-4">
+    <h1 class="fw-bold text-white mb-4 d-flex align-items-center gap-3">
+        <i class="fa-solid fa-basket-shopping style-amber text-warning"></i>
+        <span data-en="Your Shopping Cart" data-ar="سلة التسوق">Your Shopping Cart</span>
+    </h1>
+
+    {% if cart_items %}
+    <div class="row g-4">
+        <!-- Cart Items List -->
+        <div class="col-lg-8">
+            <div class="glass-panel p-4">
+                {% for item_data in cart_items %}
+                <div class="d-flex align-items-center justify-content-between py-3 {% if not forloop.last %}border-bottom border-secondary{% endif %}">
+                    <div class="d-flex align-items-center gap-3">
+                        {% if item_data.item.display_image %}
+                            <img src="{{ item_data.item.display_image }}" alt="{{ item_data.item.name }}" class="rounded-3" style="width: 75px; height: 75px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h5 class="fw-bold text-white m-0" data-en="{{ item_data.item.name }}" data-ar="{{ item_data.item.name_ar|default:item_data.item.name }}">{{ item_data.item.name }}</h5>
+                            <span class="text-muted small d-block">{{ item_data.item.price }} EGP each</span>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Control Buttons -->
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="{% url 'update_cart_quantity' item_data.item.id 'decrease' %}" class="btn btn-glass btn-sm rounded-circle px-2 py-1"><i class="fa-solid fa-minus"></i></a>
+                        <span class="fw-bold fs-5 text-white px-1">{{ item_data.quantity }}</span>
+                        <a href="{% url 'update_cart_quantity' item_data.item.id 'increase' %}" class="btn btn-glass btn-sm rounded-circle px-2 py-1"><i class="fa-solid fa-plus"></i></a>
+                    </div>
+
+                    <!-- Subtotal & Remove -->
+                    <div class="text-end">
+                        <span class="fs-5 fw-bold text-warning d-block">{{ item_data.subtotal }} EGP</span>
+                        <a href="{% url 'remove_from_cart' item_data.item.id %}" class="text-danger small text-decoration-none"><i class="fa-solid fa-trash-can me-1"></i><span data-en="Remove" data-ar="حذف">Remove</span></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div class="col-lg-4">
+            <div class="glass-panel p-4 sticky-top" style="top: 100px;">
+                <h4 class="fw-bold text-white mb-4 border-bottom border-secondary pb-3" data-en="Order Summary" data-ar="ملخص الطلب">Order Summary</h4>
+                
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span data-en="Subtotal" data-ar="المجموع الفرعي">Subtotal</span>
+                    <span class="text-white fw-bold">{{ total_price }} EGP</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span data-en="Delivery Fee" data-ar="رسوم التوصيل">Delivery Fee</span>
+                    <span class="text-success fw-bold">FREE / مجاناً</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3 text-muted">
+                    <span data-en="Service & Taxes" data-ar="الضرائب والخدمة">Service & Taxes</span>
+                    <span class="text-white-50">Included / مدمجة</span>
+                </div>
+
+                <div class="d-flex justify-content-between border-top border-secondary pt-3 mb-4">
+                    <span class="fs-4 fw-bold text-white" data-en="Total Amount" data-ar="المبلغ الإجمالي">Total Amount</span>
+                    <span class="fs-4 fw-bold text-warning">{{ total_price }} EGP</span>
+                </div>
+
+                <a href="{% url 'checkout' %}" class="btn btn-amber w-100 py-3 rounded-4 fw-bold fs-5 shadow-lg mb-3">
+                    <span data-en="Proceed to Checkout" data-ar="الانتقال إلى الدفع">Proceed to Checkout</span> <i class="fa-solid fa-arrow-right ms-2"></i>
+                </a>
+
+                <a href="{% url 'menu' %}" class="btn btn-glass w-100 py-2 rounded-4 fw-semibold text-center d-block">
+                    <i class="fa-solid fa-plus me-1"></i> <span data-en="Add More Items" data-ar="إضافة المزيد من الوجبات">Add More Items</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="glass-panel p-5 max-w-lg mx-auto">
+            <i class="fa-solid fa-basket-shopping fa-5x text-muted mb-4 opacity-50"></i>
+            <h2 class="fw-bold text-white mb-2" data-en="Your Cart is Empty" data-ar="سلة التسوق فارغة حالياً">Your Cart is Empty</h2>
+            <p class="text-muted mb-4" data-en="Browse our artisanal menu and treat yourself to a gourmet meal." data-ar="تصفح قائمة طعامنا الفاخرة واختر أطباقك المفضلة.">Browse our artisanal menu and treat yourself to a gourmet meal.</p>
+            <a href="{% url 'menu' %}" class="btn btn-amber btn-lg rounded-pill px-5" data-en="Explore Our Menu" data-ar="تصفح القائمة">Explore Our Menu</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

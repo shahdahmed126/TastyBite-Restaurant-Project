@@ -1,0 +1,27 @@
+{% extends 'restaurant/base.html' %}
+
+{% block title %}Log In - TastyBite{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+    <div class="auth-card">
+        <div class="auth-icon"><i class="fa-solid fa-right-to-bracket"></i></div>
+        <span class="eyebrow">Welcome back</span>
+        <h1>Log in to TastyBite</h1>
+        <p class="auth-subtitle">Track your orders and keep your rewards points close.</p>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+            <div class="auth-field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" autocomplete="username" required>
+            </div>
+            <div class="auth-field">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-amber w-100">Log In <i class="fa-solid fa-arrow-right ms-2"></i></button>
+        </form>
+        <p class="auth-switch">New to TastyBite? <a href="{% url 'signup' %}">Create an account</a></p>
+    </div>
+</div>
+{% endblock %}
